@@ -17,6 +17,7 @@
 
 - has_many :items
 - has_many :records
+- has_many :records
 
 ## items テーブル
 
@@ -30,7 +31,7 @@
 | area_id     | integer    | null: false |
 | days_id     | integer    | null: false |
 | price       | integer    | null: false |
-| user        | references |             |
+| user        | references | foreign_key: true |
 
 ### Association
 
@@ -41,11 +42,12 @@
 
 | Column       | Type       | Options                        |
 | ------------ | ---------- | ------------------------------ |
-| user         | references |                                |
-| item         | references |                                |
+| user         | references | foreign_key: true              |
+| item         | references | foreign_key: true              |
 
 ### Association
 
+- belongs_to :user
 - belongs_to :item
 - has_one :buyer
 
@@ -59,7 +61,7 @@
 | address       | string     | null: false                    |
 | building_name | string     |                                |
 | phone_number  | string     | null: false                    |
-| record        | references |                                |
+| record        | references | foreign_key: true              |
 
 ### Association
 
