@@ -135,6 +135,18 @@ RSpec.describe User, type: :model do
         expect(@user.errors.full_messages).to include("First name kana 全角文字を使用してください")
       end
 
+      it 'family_name_kanaが半角文字だと登録できないこと' do
+        @user.family_name_kana = "ｱｲｳｴｵ"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Family name kana 全角文字を使用してください")
+      end
+
+      it 'first_name_kanaが半角文字だと登録できないこと' do
+        @user.first_name_kana = "ｱｲｳｴｵ"
+        @user.valid?
+        expect(@user.errors.full_messages).to include("First name kana 全角文字を使用してください")
+      end
+
       it "birthdayが空だと登録できない" do
         @user.birthday = ''
         @user.valid?
