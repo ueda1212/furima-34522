@@ -43,34 +43,34 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Description can't be blank")
       end
 
-      it 'category_idが空では登録できない' do
-        @item.category_id = ''
+      it 'category_idがないと登録できない' do
+        @item.category_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include("Category can't be blank")
+        expect(@item.errors.full_messages).to include("Category must be other than 1")
       end
 
-      it 'status_idが空では登録できない' do
-        @item.status_id = ''
+      it 'status_idがないと登録できない' do
+        @item.status_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include("Status can't be blank")
+        expect(@item.errors.full_messages).to include("Status must be other than 1")
       end
 
-      it 'category_idが空では登録できない' do
-        @item.burden_id = ''
+      it 'category_idがないと登録できない' do
+        @item.burden_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include("Burden can't be blank")
+        expect(@item.errors.full_messages).to include("Burden must be other than 1")
       end
 
-      it 'area_idが空では登録できない' do
-        @item.area_id = ''
+      it 'area_idがないと登録できない' do
+        @item.area_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include("Area can't be blank")
+        expect(@item.errors.full_messages).to include("Area must be other than 1")
       end
 
-      it 'days_idが空では登録できない' do
-        @item.days_id = ''
+      it 'days_idがないと登録できない' do
+        @item.days_id = 1
         @item.valid?
-        expect(@item.errors.full_messages).to include("Days can't be blank")
+        expect(@item.errors.full_messages).to include("Days must be other than 1")
       end
 
       it 'priceが空では登録できない' do
@@ -95,6 +95,18 @@ RSpec.describe Item, type: :model do
         @item.price = '３００'
         @item.valid?
         expect(@item.errors.full_messages).to include('Price is not included in the list')
+      end
+
+      it 'priceが半角英数字混合では出品できない' do
+        @item.price = '300a'
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Price is not a number')
+      end
+
+      it 'priceが半角英字のみでは出品できない' do
+        @item.price = 'aaa'
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Price is not a number')
       end
 
       it 'userが紐付いていないと保存できないこと' do
