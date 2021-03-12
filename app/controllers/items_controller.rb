@@ -1,4 +1,5 @@
 class ItemsController < ApplicationController
+  before_action :set_item, except: [:show, :edit, :update]
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
@@ -20,16 +21,13 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
   end
 
   def edit
-    @item = Item.find(params[:id])
     redirect_to root_path unless current_user.id == @item.user_id
   end
 
   def update
-    @item = Item.find(params[:id])
     @item.update(item_params)
     if  @item.valid?
       @item.save
@@ -40,6 +38,11 @@ class ItemsController < ApplicationController
   end
 
   private
+
+  def set_prototype
+    @item = Item.find(params[:id])
+  end
+
   def item_params
     params.require(:item).permit(:name, :image, :description, :category_id, :status_id, :burden_id, :area_id, :days_id, :price).merge(user_id: current_user.id)
   end
