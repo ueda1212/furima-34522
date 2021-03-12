@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
-  before_action :set_item, except: [:show, :edit, :update]
+  before_action :set_item, only: [:show, :edit, :update]
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :not_redirect, only: [:edit, :update]
 
   def index
     @items = Item.all.order(created_at: :desc)
@@ -24,7 +25,6 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    redirect_to root_path unless current_user.id == @item.user_id
   end
 
   def update
@@ -39,11 +39,15 @@ class ItemsController < ApplicationController
 
   private
 
-  def set_prototype
+  def set_item
     @item = Item.find(params[:id])
   end
 
   def item_params
     params.require(:item).permit(:name, :image, :description, :category_id, :status_id, :burden_id, :area_id, :days_id, :price).merge(user_id: current_user.id)
+  end
+
+  def not_redirect
+    redirect_to root_path unless current_user.id == @item.user_id
   end
 end
