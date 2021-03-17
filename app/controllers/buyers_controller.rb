@@ -1,7 +1,12 @@
 class BuyersController < ApplicationController
-
+  before_action :authenticate_user!, only: [:index]
+  before_action :not_redirect, expect: [:index]
+  
   def index
     @item = Item.find(params[:item_id])
+      if current_user == @item.user
+       redirect_to root_path
+      end
     @buyer = BuyerDonation.new
   end
 
@@ -31,5 +36,9 @@ class BuyersController < ApplicationController
       card: buyer_donation_params[:token],
       currency: 'jpy'
     )
+  end
+
+  def not_redirect
+   
   end
 end
