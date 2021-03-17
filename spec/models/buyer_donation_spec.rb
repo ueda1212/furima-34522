@@ -1,0 +1,56 @@
+require 'rails_helper'
+
+RSpec.describe BuyerDonation, type: :model do
+  before do
+    @buyer_donation = FactoryBot.build(:buyer_donation)
+  end
+
+  describe '購入者情報'do
+    context '購入者情報が登録できるとき' do
+      it 'post_code,area_id,municipality,address,phone_numberが存在すれば登録できる' do
+        expect(@buyer_donation).to be_valid
+      end
+
+      it 'phone_numberが11文字以下なら登録できる' do
+        @buyer_donation.phone_number = "00000000000"
+        expect(@buyer_donation).to be_valid
+      end
+    end
+
+      context '購入者情報が登録できないとき' do
+        it 'post_codeが空では登録できない' do
+          @buyer_donation.post_code = ""
+          @buyer_donation.valid?
+          expect(@buyer_donation.errors.full_messages).to include("Post code can't be blank")
+        end
+
+        it 'post_codeにハイフンがないと登録できない' do
+          @buyer_donation.post_code = "0000000"
+          @buyer_donation.valid?
+          expect(@buyer_donation.errors.full_messages).to include("Post code is invalid. Include hyphen(-)")
+        end
+
+        it 'area_idがないと登録できない' do
+          @buyer_donation.area_id = 1
+          @buyer_donation.valid?
+          expect(@buyer_donation.errors.full_messages).to include("Area must be other than 1")
+        end
+
+          it 'municipalityが空だと登録できない' do
+            @buyer_donation.municipality = ""
+            @buyer_donation.valid?
+            expect(@buyer_donation.errors.full_messages).to include("Municipality can't be blank")
+          end
+          it 'addressが空だと登録できない' do
+            @buyer_donation.address = ""
+            @buyer_donation.valid?
+            expect(@buyer_donation.errors.full_messages).to include("Address can't be blank")
+          end
+          it 'phone_numberが空だと登録できない' do
+            @buyer_donation.phone_number = ""
+            @buyer_donation.valid?
+            expect(@buyer_donation.errors.full_messages).to include("Phone number can't be blank")
+          end
+      end
+  end
+end
