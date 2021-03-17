@@ -7,7 +7,7 @@ RSpec.describe BuyerDonation, type: :model do
 
   describe '購入者情報'do
     context '購入者情報が登録できるとき' do
-      it 'post_code,area_id,municipality,address,phone_numberが存在すれば登録できる' do
+      it 'token,post_code,area_id,municipality,address,phone_numberが存在すれば登録できる' do
         expect(@buyer_donation).to be_valid
       end
 
@@ -18,6 +18,12 @@ RSpec.describe BuyerDonation, type: :model do
     end
 
       context '購入者情報が登録できないとき' do
+        it "tokenが空では登録できないこと" do
+          @buyer_donation.token = ""
+          @buyer_donation.valid?
+          expect(@buyer_donation.errors.full_messages).to include("Token can't be blank")
+        end
+
         it 'post_codeが空では登録できない' do
           @buyer_donation.post_code = ""
           @buyer_donation.valid?
