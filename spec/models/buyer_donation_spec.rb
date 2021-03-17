@@ -11,6 +11,11 @@ RSpec.describe BuyerDonation, type: :model do
         expect(@buyer_donation).to be_valid
       end
 
+      it 'building_nameが空でも登録できる' do
+        @buyer_donation.building_name = ""
+        expect(@buyer_donation).to be_valid
+      end
+
       it 'phone_numberが11文字以下なら登録できる' do
         @buyer_donation.phone_number = "00000000000"
         expect(@buyer_donation).to be_valid
@@ -36,6 +41,12 @@ RSpec.describe BuyerDonation, type: :model do
           expect(@buyer_donation.errors.full_messages).to include("Post code is invalid. Include hyphen(-)")
         end
 
+        it 'postcodeが全角だと登録できない' do
+          @buyer_donation.post_code = "０１２３ー４５６７８９０"
+          @buyer_donation.valid?
+          expect(@buyer_donation.errors.full_messages).to include("Post code is invalid. Include hyphen(-)")
+        end
+
         it 'area_idがないと登録できない' do
           @buyer_donation.area_id = 1
           @buyer_donation.valid?
@@ -47,15 +58,35 @@ RSpec.describe BuyerDonation, type: :model do
             @buyer_donation.valid?
             expect(@buyer_donation.errors.full_messages).to include("Municipality can't be blank")
           end
+
           it 'addressが空だと登録できない' do
             @buyer_donation.address = ""
             @buyer_donation.valid?
             expect(@buyer_donation.errors.full_messages).to include("Address can't be blank")
           end
+
           it 'phone_numberが空だと登録できない' do
             @buyer_donation.phone_number = ""
             @buyer_donation.valid?
             expect(@buyer_donation.errors.full_messages).to include("Phone number can't be blank")
+          end
+
+          it 'phone_numberが12文字以上だと登録できない' do
+            @buyer_donation.phone_number = "123456789100"
+            @buyer_donation.valid?
+            expect(@buyer_donation.errors.full_messages).to include("Phone number is invalid")
+          end
+
+          it 'phone_numberが全角だと登録できない' do
+            @buyer_donation.phone_number = "０１２３４５６７８９０"
+            @buyer_donation.valid?
+            expect(@buyer_donation.errors.full_messages).to include("Phone number is invalid")
+          end
+
+          it 'phone_numberが英数混合だと登録できない' do
+            @buyer_donation.phone_number = "123456abcde"
+            @buyer_donation.valid?
+            expect(@buyer_donation.errors.full_messages).to include("Phone number is invalid")
           end
       end
   end

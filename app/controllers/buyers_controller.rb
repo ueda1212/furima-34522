@@ -1,9 +1,9 @@
 class BuyersController < ApplicationController
-  before_action :authenticate_user!, only: [:index]
-  before_action :not_redirect, expect: [:index]
+  before_action :set_item, only: [:index, :create]
+  before_action :authenticate_user!, only: [:index, :create]
+  before_action :not_redirect, only: [:index, :create]
   
   def index
-    @item = Item.find(params[:item_id])
       if current_user == @item.user
        redirect_to root_path
       end
@@ -12,7 +12,6 @@ class BuyersController < ApplicationController
 
 
   def create
-    @item = Item.find(params[:item_id])
     @buyer = BuyerDonation.new(buyer_donation_params)
     if  @buyer.valid?
       pay_item
@@ -24,6 +23,9 @@ class BuyersController < ApplicationController
   end
 
   private
+  def set_item
+    @item = Item.find(params[:item_id])
+  end
 
   def buyer_donation_params
     params.require(:buyer_donation).permit(:post_code, :area_id, :municipality, :address, :building_name, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
@@ -39,6 +41,6 @@ class BuyersController < ApplicationController
   end
 
   def not_redirect
-   
+    redirect_to root_path if current_user.id == @item.user_id || @item.record.present?
   end
 end
