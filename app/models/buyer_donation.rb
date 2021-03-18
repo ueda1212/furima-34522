@@ -11,6 +11,8 @@ class BuyerDonation
     validates :municipality
     validates :address
     validates :phone_number, format: { with: VALID_PHONE_REGEX }
+    validates :user_id
+    validates :item_id
   end
 
   def save

@@ -88,6 +88,19 @@ RSpec.describe BuyerDonation, type: :model do
             @buyer_donation.valid?
             expect(@buyer_donation.errors.full_messages).to include("Phone number is invalid")
           end
+
+          it 'user_idが英数混合だと登録できない' do
+            @buyer_donation.user_id = ""
+            @buyer_donation.valid?
+            expect(@buyer_donation.errors.full_messages).to include("User can't be blank")
+          end
+
+          it 'item_idが英数混合だと登録できない' do
+            @buyer_donation.item_id = ""
+            @buyer_donation.valid?
+            expect(@buyer_donation.errors.full_messages).to include("Item can't be blank")
+          end
+
       end
   end
 end

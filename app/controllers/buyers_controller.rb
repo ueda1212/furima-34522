@@ -4,9 +4,6 @@ class BuyersController < ApplicationController
   before_action :not_redirect, only: [:index, :create]
   
   def index
-      if current_user == @item.user
-       redirect_to root_path
-      end
     @buyer = BuyerDonation.new
   end
 
