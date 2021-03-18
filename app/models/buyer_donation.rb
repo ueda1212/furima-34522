@@ -2,7 +2,7 @@ class BuyerDonation
   include ActiveModel::Model
   attr_accessor :post_code, :area_id, :municipality, :address, :building_name, :phone_number, :user_id, :item_id,  :token
 
-  VALID_PHONE_REGEX = /\A\d{0}$|^\d{11}\z/
+  VALID_PHONE_REGEX = /\A\d{10}$|^\d{11}\z/
 
   with_options presence: true do
     validates :token

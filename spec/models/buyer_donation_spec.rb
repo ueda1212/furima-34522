@@ -18,11 +18,6 @@ RSpec.describe BuyerDonation, type: :model do
         @buyer_donation.building_name = ""
         expect(@buyer_donation).to be_valid
       end
-
-      it 'phone_numberが11文字以下なら登録できる' do
-        @buyer_donation.phone_number = "00000000000"
-        expect(@buyer_donation).to be_valid
-      end
     end
 
       context '購入者情報が登録できないとき' do
@@ -76,6 +71,12 @@ RSpec.describe BuyerDonation, type: :model do
 
           it 'phone_numberが12文字以上だと登録できない' do
             @buyer_donation.phone_number = "123456789100"
+            @buyer_donation.valid?
+            expect(@buyer_donation.errors.full_messages).to include("Phone number is invalid")
+          end
+
+          it 'phone_numberが9文字以下だと登録できない' do
+            @buyer_donation.phone_number = "123456789"
             @buyer_donation.valid?
             expect(@buyer_donation.errors.full_messages).to include("Phone number is invalid")
           end
