@@ -5,9 +5,7 @@ FactoryBot.define do
     area_id            {24}
     municipality       {"愛知県名古屋市中区栄"}
     address            {"３丁目１３−２０"}
-    building_name      {""}
+    building_name      {"TECK"}
     phone_number       {"05031873522"}
-    user_id            {"1"}
-    item_id            {"1"}
   end
 end
